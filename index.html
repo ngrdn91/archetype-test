@@ -31,7 +31,10 @@ h1{font-size:24px;line-height:1.3;font-weight:700;margin:0 0 28px;letter-spacing
 .again{background:none;color:var(--fg);border:1px solid var(--line);margin-top:28px}
 .res h2{font-size:34px;margin:0 0 8px;letter-spacing:-.02em}
 .res .core{margin:0 0 6px}
-.res .shadow{color:var(--mute);margin:0 0 28px}
+.res .shadow{color:var(--mute);margin:0 0 20px}
+.facts{margin:0 0 28px;border-top:1px solid var(--line)}
+.f{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.f b{color:var(--mute);font-weight:500}
 .row{display:grid;grid-template-columns:110px 1fr 38px;gap:10px;align-items:center;font-size:14px;margin-bottom:8px}
 .row .t{height:4px;background:var(--line);border-radius:2px;overflow:hidden}
 .row .t i{display:block;height:100%;background:var(--fg)}
@@ -57,6 +60,7 @@ jes:["Шут","Радость момента, юмор, лёгкость.","Ух
 car:["Заботливый","Защита и помощь другим.","Самопожертвование, гиперопека.","Защищать и заботиться о других","Эгоизм, неблагодарность","Делать что-то для других","Сострадание, щедрость","Первым замечает, что кому-то плохо, трудно отказать в помощи"],
 rul:["Правитель","Порядок, власть, ответственность.","Контроль и авторитаризм.","Контроль и порядок","Хаос, потеря власти","Управлять, выстраивать правила и структуры","Ответственность, лидерство","Берёт руководство на себя, любит планы и систему"],
 cre:["Творец","Воплощает идеи, создаёт новое.","Перфекционизм.","Создать нечто ценное и долговечное","Посредственный замысел или исполнение","Развивать мастерство и художественный контроль","Воображение, творческий подход","Постоянно что-то придумывает, не терпит шаблонов"]};
+var L=["Желание","Страх","Стратегия","Дар","Как проявляется"];
 var Q=[
 ["Что для вас важнее всего в жизни?",["Жить честно, просто и быть счастливым","Быть «своим», принадлежать людям","Преображать реальность и воплощать невозможное","Близость, страсть, глубокие отношения"],["inn","reg","mag","lov"]],
 ["Чего вы боитесь больше всего?",["Остаться одному, быть отвергнутым","Быть обманутым или остаться невеждой","Оказаться слабым и беспомощным","Быть скучным и незамеченным"],["reg","sag","her","jes"]],
@@ -74,7 +78,6 @@ var Q=[
 ["Чего вам сейчас не хватает больше всего?",["Ощущения принадлежности","Перемен, встряски, революции","Страсти и эмоциональной близости","Контроля и порядка"],["reg","out","lov","rul"]],
 ["Какой девиз вам ближе?",["«Истина делает свободным»","«Всё возможно, нужно только знать как»","«Жить надо весело!»","«Если можешь вообразить, можешь создать»"],["sag","mag","jes","cre"]]];
 var i=-1,ans=[],c=document.getElementById("c"),p=document.getElementById("p");
-function h(s){return s}
 function intro(){i=-1;ans=[];p.style.width="0";
 c.innerHTML='<div class="intro"><h1>Какой вы архетип?</h1><p>15 вопросов, один ответ в каждом. Отвечайте быстро и честно, как есть, а не как хотелось бы.</p><button class="go" id="s">Начать</button></div>';
 document.getElementById("s").onclick=function(){i=0;show()}}
@@ -89,7 +92,8 @@ ans.forEach(function(k,n){s[Q[n][2][k]]++});
 var r=Object.keys(s).sort(function(a,b){return s[b]-s[a]}),t=r[0],u=r[1];
 var rows=r.filter(function(k){return s[k]>0}).map(function(k){var pc=Math.round(s[k]/Q.length*100);
 return '<div class="row"><span>'+A[k][0]+'</span><span class="t"><i style="width:'+pc+'%"></i></span><span>'+pc+'%</span></div>'}).join("");
-c.innerHTML='<div class="res"><h2>'+A[t][0]+'</h2><p class="core">'+A[t][1]+'</p><p class="shadow">Тень: '+A[t][2]+'</p>'+
+var facts=L.map(function(n,k){return '<div class="f"><b>'+n+'</b><span>'+A[t][k+3]+'</span></div>'}).join("");
+c.innerHTML='<div class="res"><h2>'+A[t][0]+'</h2><p class="core">'+A[t][1]+'</p><p class="shadow">Тень: '+A[t][2]+'</p><div class="facts">'+facts+'</div>'+
 (s[u]>0?'<p class="second">Второй по силе: '+A[u][0]+'. Первый архетип показывает базовую мотивацию, второй, как вы её реализуете.</p>':'')+rows+'<button class="again" id="a">Пройти заново</button></div>';
 document.getElementById("a").onclick=intro}
 try{var tg=window.Telegram&&Telegram.WebApp;if(tg){tg.ready();tg.expand();document.documentElement.setAttribute("data-theme",tg.colorScheme==="dark"?"dark":"light")}}catch(e){}
