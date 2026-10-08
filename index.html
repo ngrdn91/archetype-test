@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<title>Тест: ваш архетип</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#fff;--fg:#141414;--mute:#8a8a8a;--line:#e4e4e4;--hover:#f3f3f3;--card:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--fg:#f2f2f2;--mute:#8f8f8f;--line:#2c2c2c;--hover:#1d1d1d;--card:#171717}}
+:root[data-theme="dark"]{--bg:#121212;--fg:#f2f2f2;--mute:#8f8f8f;--line:#2c2c2c;--hover:#1d1d1d;--card:#171717}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;line-height:1.5;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:24px 16px}
+.wrap{width:100%;max-width:520px}
+.bar{height:2px;background:var(--line);margin-bottom:20px}
+.bar i{display:block;height:100%;width:0;background:var(--fg);transition:width .3s}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:32px 28px}
+.meta{display:flex;justify-content:space-between;color:var(--mute);font-size:14px;margin-bottom:28px}
+.meta button{background:none;border:0;color:var(--mute);font:inherit;cursor:pointer;padding:0}
+.meta button:disabled{opacity:.3;cursor:default}
+h1{font-size:24px;line-height:1.3;font-weight:700;margin:0 0 28px;letter-spacing:-.01em}
+.opt{display:block;width:100%;text-align:left;background:none;color:inherit;font:inherit;font-size:16px;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:background .15s,border-color .15s}
+.opt:hover{background:var(--hover)}
+.opt.on{border-color:var(--fg);background:var(--hover)}
+.opt:focus-visible,.meta button:focus-visible,.again:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.intro p{color:var(--mute);margin:0 0 28px}
+.go,.again{background:var(--fg);color:var(--bg);border:0;border-radius:12px;font:inherit;font-weight:500;padding:14px 22px;cursor:pointer}
+.again{background:none;color:var(--fg);border:1px solid var(--line);margin-top:28px}
+.res h2{font-size:34px;margin:0 0 8px;letter-spacing:-.02em}
+.res .core{margin:0 0 6px}
+.res .shadow{color:var(--mute);margin:0 0 28px}
+.row{display:grid;grid-template-columns:110px 1fr 38px;gap:10px;align-items:center;font-size:14px;margin-bottom:8px}
+.row .t{height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+.row .t i{display:block;height:100%;background:var(--fg)}
+.row span:last-child{color:var(--mute);text-align:right}
+.second{color:var(--mute);font-size:14px;margin:0 0 24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar"><i id="p"></i></div>
+  <div class="card" id="c"></div>
+</div>
+<script>
+var A={inn:["Невинный","Вера в добро, простота, стремление к счастью и безопасности.","Наивность, избегание проблем."],
+reg:["Простой парень","«Свой человек»: честность, принадлежность, без показухи.","Подстраивание под других."],
+sag:["Мудрец","Ищет истину и понимание, опирается на факты.","Отстранённость, застревание в анализе."],
+see:["Искатель","Свобода, путь, поиск себя и новых горизонтов.","Неспособность остановиться и прижиться."],
+out:["Бунтарь","Разрушает устаревшее, требует перемен.","Разрушение ради разрушения."],
+mag:["Маг","Преображает реальность, видит скрытые связи.","Манипуляция."],
+her:["Герой","Мужество, дисциплина, победа над трудностями.","Жёсткость, постоянная потребность доказывать себя."],
+lov:["Любовник","Страсть, близость, красота.","Зависимость от одобрения и привязанностей."],
+jes:["Шут","Радость момента, юмор, лёгкость.","Уход от серьёзного, пустота за шуткой."],
+car:["Заботливый","Защита и помощь другим.","Самопожертвование, гиперопека."],
+rul:["Правитель","Порядок, власть, ответственность.","Контроль и авторитаризм."],
+cre:["Творец","Воплощает идеи, создаёт новое.","Перфекционизм."]};
+var Q=[
+["Что для вас важнее всего в жизни?",["Жить честно, просто и быть счастливым","Быть «своим», принадлежать людям","Преображать реальность и воплощать невозможное","Близость, страсть, глубокие отношения"],["inn","reg","mag","lov"]],
+["Чего вы боитесь больше всего?",["Остаться одному, быть отвергнутым","Быть обманутым или остаться невеждой","Оказаться слабым и беспомощным","Быть скучным и незамеченным"],["reg","sag","her","jes"]],
+["Что больше всего привлекает вас в новом деле?",["Возможность разобраться, как всё устроено","Свобода и новые горизонты","Люди, с которыми я его разделю","Возможность кому-то помочь"],["sag","see","lov","car"]],
+["Как вы относитесь к правилам?",["Они ограничивают, я хочу идти своим путём","Правила существуют, чтобы их ломать","Не воспринимаю их всерьёз, пересматриваю с юмором","Правила нужны для порядка, и я умею их устанавливать"],["see","out","jes","rul"]],
+["За чем к вам чаще всего обращаются люди?",["За честным мнением без прикрас","За нестандартной идеей, как изменить ситуацию","За поддержкой и заботой","За чем-то оригинальным, что я создал(а)"],["out","mag","car","cre"]],
+["Как вы действуете в кризисной ситуации?",["Ищу скрытую причину и меняю саму картину","Беру ответственность и иду вперёд","Навожу порядок и распределяю роли","Верю, что всё наладится, и сохраняю оптимизм"],["mag","her","rul","inn"]],
+["Каким был бы ваш идеальный выходной?",["Вызов: тренировка, поход, покорение чего-то трудного","Время с любимым человеком в красивой атмосфере","Работа над собственным проектом","Посиделки с друзьями без лишних выкрутасов"],["her","lov","cre","reg"]],
+["Как вас описывают окружающие?",["Тёплый, обаятельный, чувственный","Весёлый, душа компании","Добрый, искренний, светлый","Умный, вдумчивый, рассудительный"],["lov","jes","inn","sag"]],
+["Что вы больше всего цените в людях?",["Чувство юмора","Отзывчивость и доброту","Надёжность и честность без показухи","Независимость и любопытство"],["jes","car","reg","see"]],
+["Вы видите несправедливость. Что делаете?",["Защищаю того, кому плохо","Навожу порядок и добиваюсь, чтобы виновный ответил","Сначала выясняю все факты","Выступаю против системы, которая это допускает"],["car","rul","sag","out"]],
+["Как вы обычно принимаете решения?",["Взвешиваю всё и беру контроль на себя","Следую внутреннему образу и вдохновению","Иду туда, где интересно и где чувствую свободу","Доверяю интуиции и скрытым связям между вещами"],["rul","cre","see","mag"]],
+["Какую роль вы любите в команде?",["Автор идеи, тот, кто создаёт новое","Тот, кто сохраняет веру и дух команды","Тот, кто ставит всё под сомнение","Тот, кто берёт на себя самое трудное"],["cre","inn","out","her"]],
+["Что для вас успех?",["Гармония и простая счастливая жизнь","Свобода и богатый опыт","Победа и достижение цели","Когда близкие в порядке и защищены"],["inn","see","her","car"]],
+["Чего вам сейчас не хватает больше всего?",["Ощущения принадлежности","Перемен, встряски, революции","Страсти и эмоциональной близости","Контроля и порядка"],["reg","out","lov","rul"]],
+["Какой девиз вам ближе?",["«Истина делает свободным»","«Всё возможно, нужно только знать как»","«Жить надо весело!»","«Если можешь вообразить, можешь создать»"],["sag","mag","jes","cre"]]];
+var i=-1,ans=[],c=document.getElementById("c"),p=document.getElementById("p");
+function h(s){return s}
+function intro(){i=-1;ans=[];p.style.width="0";
+c.innerHTML='<div class="intro"><h1>Какой вы архетип?</h1><p>15 вопросов, один ответ в каждом. Отвечайте быстро и честно, как есть, а не как хотелось бы.</p><button class="go" id="s">Начать</button></div>';
+document.getElementById("s").onclick=function(){i=0;show()}}
+function show(){var q=Q[i];p.style.width=(i/Q.length*100)+"%";
+var o=q[1].map(function(t,k){return '<button class="opt'+(ans[i]===k?' on':'')+'" data-k="'+k+'">'+t+'</button>'}).join("");
+c.innerHTML='<div class="meta"><button id="b"'+(i?'':' disabled')+'>Назад</button><span>'+(i+1)+' из '+Q.length+'</span></div><h1>'+q[0]+'</h1>'+o;
+document.getElementById("b").onclick=function(){if(i>0){i--;show()}};
+c.querySelectorAll(".opt").forEach(function(b){b.onclick=function(){ans[i]=+b.dataset.k;b.classList.add("on");
+setTimeout(function(){if(i<Q.length-1){i++;show()}else done()},180)}})}
+function done(){p.style.width="100%";var s={};Object.keys(A).forEach(function(k){s[k]=0});
+ans.forEach(function(k,n){s[Q[n][2][k]]++});
+var r=Object.keys(s).sort(function(a,b){return s[b]-s[a]}),t=r[0],u=r[1];
+var rows=r.filter(function(k){return s[k]>0}).map(function(k){var pc=Math.round(s[k]/Q.length*100);
+return '<div class="row"><span>'+A[k][0]+'</span><span class="t"><i style="width:'+pc+'%"></i></span><span>'+pc+'%</span></div>'}).join("");
+c.innerHTML='<div class="res"><h2>'+A[t][0]+'</h2><p class="core">'+A[t][1]+'</p><p class="shadow">Тень: '+A[t][2]+'</p>'+
+(s[u]>0?'<p class="second">Второй по силе: '+A[u][0]+'. Первый архетип показывает базовую мотивацию, второй, как вы её реализуете.</p>':'')+rows+'<button class="again" id="a">Пройти заново</button></div>';
+document.getElementById("a").onclick=intro}
+try{var tg=window.Telegram&&Telegram.WebApp;if(tg){tg.ready();tg.expand();document.documentElement.setAttribute("data-theme",tg.colorScheme==="dark"?"dark":"light")}}catch(e){}
+intro();
+</script>
+</body>
+</html>
